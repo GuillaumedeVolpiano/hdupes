@@ -12,7 +12,7 @@ where
 
 import Brick.Types (Widget)
 import Brick.Widgets.Core (str, hBox)
-import Brick (BrickEvent(..), EventM, halt, modify, gets, vBox, ViewportType (Vertical), viewport, viewportScroll, vScrollBy, hLimitPercent, (<+>), Padding (Max), padRight, AttrMap, attrMap, on, attrName, withAttr, AttrName)
+import Brick (BrickEvent(..), EventM, halt, modify, gets, vBox, ViewportType (Vertical), viewport, viewportScroll, vScrollBy, hLimitPercent, (<+>), Padding (Max), padRight, AttrMap, attrMap, on, attrName, withAttr, AttrName, vLimitPercent)
 import qualified Graphics.Vty as V (reverseVideo, withStyle, Event (EvKey), Key (KEsc, KDown, KUp, KChar, KEnter), defAttr, blue, white)
 import Brick.Widgets.Border (border, hBorder)
 import Control.Monad (when)
@@ -89,6 +89,6 @@ drawUI s = [border viewportContent, hBorder, statusLine]
       dedupes = zipWith (\i (isSelected, item) ->
                         renderSubstitution (i == pos && isSelected) item)
                       [0..] selected
-      viewportContent = viewport viewportName Vertical . vBox $ dedupes
+      viewportContent = viewport viewportName Vertical . vLimitPercent 90 . vBox $ dedupes
       statusLine = hBox [str ("linked: " ++ show (linked s)), str ("dupes: " ++ show (identified s))
                         , str ("uncertain: " ++ show (uncertain s)), str ("no match: " ++ show (noMatch s))]
